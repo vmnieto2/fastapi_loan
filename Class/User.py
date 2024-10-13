@@ -16,12 +16,14 @@ class User:
 
         data_user = self.querys.get_user(email)
 
-        enc_passwd = data_user.password
+        enc_passwd = data_user["password"]
         if not check_password_hash(enc_passwd, password):
             raise CustomException("Username or password incorrect.")
         
-        if data_user.user_type_id != 1:
+        if data_user["user_type_id"] != 1:
             raise CustomException("User not authorized.", 401)
 
-        token = create_token(data)
-        return self.tools.output(200, "Login successfully.", token)
+        token = create_token(data_user)
+        data_user["token"] = token
+        data_user.pop("password")
+        return self.tools.output(200, "Login successfully.", data_user)

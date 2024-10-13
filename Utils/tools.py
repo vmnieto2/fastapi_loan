@@ -138,6 +138,10 @@ class Tools:
     #     # Cerrar conexion Con servidor
     #     server.quit()
 
+    # Define a function to the format the currency string
+    def format_currency(self, amount):
+        return '${:,.0f}'.format(amount).replace(",", ".")
+
 
 class CustomException(Exception):
     """ Esta clase hereda de la clase Exception y permite

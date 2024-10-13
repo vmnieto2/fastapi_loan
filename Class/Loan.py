@@ -44,7 +44,8 @@ class Loan():
                 result.append({
                     "id": loan.id,
                     "description": loan.description,
-                    "total_loan": float(loan.total_loan)
+                    "total_loan": self.tools.format_currency(loan.total_loan),
+                    "created_at": str(loan.created_at)
                 })
                 
         return self.tools.output(200, "Data found.", result)

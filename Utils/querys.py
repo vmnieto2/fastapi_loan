@@ -16,6 +16,8 @@ class Querys:
     # Query for obtain data of user to log
     def get_user(self, email: str):
 
+        result = {}
+
         query = session.query(
             UserModel
         ).filter(
@@ -26,7 +28,15 @@ class Querys:
         if not query:
             raise CustomException("User not found.")
         
-        return query
+        result = {
+            "first_name": query.first_name,
+            "last_name": query.last_name,
+            "user_type_id": query.user_type_id,
+            "password": query.password,
+            "email": query.email,
+        }
+
+        return result
     
     # Query for have all type documents
     def get_type_document(self):
