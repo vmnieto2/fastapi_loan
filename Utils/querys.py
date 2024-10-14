@@ -228,6 +228,7 @@ class Querys:
                 result.append({
                     "id": pay.id,
                     "pay_amount": float(pay.pay_amount),
+                    "pay_to_show": self.tools.format_currency(pay.pay_amount),
                     "created_at": str(pay.created_at)
                 })
 

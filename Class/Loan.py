@@ -41,11 +41,31 @@ class Loan():
         
         if loans:
             for loan in loans:
+
+                owe = loan.total_loan
+
+                result_payments = self.querys.find_payments(loan.id)
+
+                if len(result_payments) > 0:
+                    result_difference = self.calculate_difference(result_payments)
+                    owe = int(loan.total_loan) - result_difference
+
                 result.append({
                     "id": loan.id,
                     "description": loan.description,
                     "total_loan": self.tools.format_currency(loan.total_loan),
-                    "created_at": str(loan.created_at)
+                    "created_at": str(loan.created_at),
+                    "payments": result_payments,
+                    "owe": self.tools.format_currency(owe),
                 })
                 
         return self.tools.output(200, "Data found.", result)
+
+    # Calculate the difference of the total loan and all payments 
+    def calculate_difference(self, data: dict):
+
+        result = 0
+        for pay in data:
+            result += pay['pay_amount']
+        
+        return result
