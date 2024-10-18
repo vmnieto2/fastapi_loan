@@ -18,9 +18,16 @@ class Loan():
         
         self.querys.check_client_by_id(client_id)
         
-        quantity_loans = self.querys.validate_loan(client_id, True)
-        if quantity_loans >= 3:
-            raise CustomException("Exceeds number of loans, maximum 3.")
+        """sumary_line
+        
+        Se comenta la funcion de validar limite ya que se correjira a futuro
+        para que si sean 3 porque ahora mismo si ya pagó un prestamo aún lo
+        cuenta como un prestamo activo
+        """
+        
+        # quantity_loans = self.querys.validate_loan(client_id, True)
+        # if quantity_loans >= 3:
+        #     raise CustomException("Exceeds number of loans, maximum 3.")
 
         data_loan_save = {
             "client_id": client_id,

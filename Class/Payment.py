@@ -14,6 +14,7 @@ class Payment():
         loan_id = data['loan_id']
         pay_amount = data['pay_amount']
         data_pay_save = {}
+        owe = 0
         
         result_loan = self.querys.check_if_exists_loan(loan_id)
         
@@ -22,6 +23,12 @@ class Payment():
         result_payments = self.querys.find_payments(loan_id)
         if len(result_payments) > 0:
             sum_result = self.calculate_difference(result_payments)
+
+            owe = total_loan - sum_result
+
+            if pay_amount > owe:
+                msg = "The amount to pay is higher than what is owed."
+                raise CustomException(msg)
             
             if sum_result == total_loan:
                 return self.tools.output(200, "The debt is already paid.")

@@ -182,7 +182,7 @@ class Querys:
             LoanModel.client_id == client_id, LoanModel.status == 1
         )
         if count:
-            loans.count()
+            loans = loans.count()
         session.close()
         
         return loans
