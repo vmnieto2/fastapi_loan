@@ -15,10 +15,3 @@ def create_payment(request: Request, payment: PaymentSchema):
     data = getattr(request.state, "json_data", {})
     response = Payment().create_payment(data)
     return response
-
-@payment_router.post('/payment/show_payments', tags=["Payment"], response_model=dict, dependencies=[Depends(JWTBearer())])
-@http_decorator
-def show_payments(request: Request):
-    data = getattr(request.state, "json_data", {})
-    response = Payment().show_payments(data)
-    return response

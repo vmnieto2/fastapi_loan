@@ -18,3 +18,24 @@ def get_type_document(request: Request):
 def get_type_user(request: Request):
     response = Param().get_type_user()
     return response
+
+@param_router.post('/params/delete_param', tags=["Params"], response_model=dict, dependencies=[Depends(JWTBearer())])
+@http_decorator
+def delete_param(request: Request):
+    data = getattr(request.state, "json_data", {})
+    response = Param().delete_param(data)
+    return response
+
+@param_router.post('/params/update_param', tags=["Params"], response_model=dict, dependencies=[Depends(JWTBearer())])
+@http_decorator
+def update_param(request: Request):
+    data = getattr(request.state, "json_data", {})
+    response = Param().update_param(data)
+    return response
+
+@param_router.post('/params/create_param', tags=["Params"], response_model=dict, dependencies=[Depends(JWTBearer())])
+@http_decorator
+def create_param(request: Request):
+    data = getattr(request.state, "json_data", {})
+    response = Param().create_param(data)
+    return response

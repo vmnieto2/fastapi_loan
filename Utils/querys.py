@@ -178,11 +178,15 @@ class Querys:
 
         loans = session.query(
             LoanModel
-        ).filter(
-            LoanModel.client_id == client_id, LoanModel.status == 1
         )
         if count:
-            loans = loans.count()
+            loans = loans.filter(
+                LoanModel.client_id == client_id, LoanModel.status == 1
+            ).count()
+        else:
+            loans = loans.filter(
+                LoanModel.client_id == client_id, LoanModel.status.in_([1,2])
+            ).all()
         session.close()
         
         return loans
@@ -233,3 +237,57 @@ class Querys:
                 })
 
         return result
+
+    # Function to find loan and change the status
+    def change_status(self, loan_id: int, new_status: int):
+
+        query = session.query(
+            LoanModel
+        ).filter(
+            LoanModel.id == loan_id, LoanModel.status == 1
+        ).first()
+
+        if query:
+            query.status = new_status
+            session.commit()
+        session.close()
+
+        return True
+
+    # Function to delete a param (change state)
+    def delete_param(self, model, param_id):
+
+        query = session.query(
+            model
+        ).filter(
+            model.id == param_id, model.status == 1
+        ).first()
+
+        if not query:
+            raise CustomException("Param doesn't exists.")
+
+        query.status = 0
+        session.commit()
+        session.close()
+
+        return True
+
+    # Function to update a param
+    def update_param(self, model, param_id, param_name, param_description):
+
+        query = session.query(
+            model
+        ).filter(
+            model.id == param_id, model.status == 1
+        ).first()
+
+        if not query:
+            raise CustomException("Param doesn't exists.")
+
+        query.name = param_name
+        if param_description:
+            query.description = param_description
+        session.commit()
+        session.close()
+
+        return True
