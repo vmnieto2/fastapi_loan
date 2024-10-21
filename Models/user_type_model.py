@@ -11,3 +11,5 @@ class TypeUserModel(BASE):
     status = Column(Integer, nullable=False, default=1)
     created_at = Column(DateTime(), default=datetime.now(), nullable=False)
  
+    def __init__(self, data: dict):
+        self.name = data['name']

@@ -282,12 +282,36 @@ class Querys:
         ).first()
 
         if not query:
-            raise CustomException("Param doesn't exists.")
+            raise CustomException("Parameter doesn't exists.")
 
         query.name = param_name
         if param_description:
             query.description = param_description
         session.commit()
         session.close()
+
+        return True
+
+    # Function to create a param
+    def create_param(self, model: any, data: dict):
+
+        query = session.query(
+            model
+        ).filter(
+            model.name == data["name"], model.status == 1
+        ).first()
+
+        if query:
+            raise CustomException("Parameter already exists.")
+        
+        print(data)
+
+        try:
+            param_data = model(data)
+            session.add(param_data)
+            session.commit()
+            session.close()
+        except Exception as ex:
+            raise CustomException(str(ex))
 
         return True

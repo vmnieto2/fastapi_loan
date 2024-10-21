@@ -53,22 +53,21 @@ class Param:
 
     def create_param(self, data: dict):
 
-        """sumary_line
-        
-        Pendiente el crear parametro
-        """
-        
-
         type_list = data["type_list"]
         param_name = data["param_name"]
         param_description = data.get("param_description", '')
         model = None
 
+        data_save = {
+            'name': param_name
+        }
+
         if type_list == "get_type_document":
             model = TypeDocumentModel
+            data_save['description'] = param_description
         elif type_list == "get_type_user":
             model = TypeUserModel
 
-        self.querys.create_param(model, param_id, param_name, param_description)
+        self.querys.create_param(model, data_save)
 
-        return self.tools.output(200, "Parameter updated succesfully.")
+        return self.tools.output(200, "Parameter created succesfully.")
