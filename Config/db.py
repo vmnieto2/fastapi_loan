@@ -1,4 +1,4 @@
-import sqlalchemy
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.pool import NullPool
@@ -15,17 +15,21 @@ host = os.getenv("DB_HOST")
 port = os.getenv("DB_PORT")
 db_name = os.getenv("DB_NAME")
 
-connect_url = sqlalchemy.engine.url.URL(
-    "mysql+pymysql",
-    username=user,
-    password=passwd,
-    host=host,
-    port=int(port),
-    database=db_name,
-    query=dict(charset="utf8mb4")
-)
+# Conexión mysql
+# connect_url = sqlalchemy.engine.url.URL(
+#     "mysql+pymysql",
+#     username=user,
+#     password=passwd,
+#     host=host,
+#     port=int(port),
+#     database=db_name,
+#     query=dict(charset="utf8mb4")
+# )
 
-engine = sqlalchemy.create_engine(connect_url, poolclass=NullPool)
+# Conexión Postgres
+connect_url = f"postgresql://{user}:{passwd}@{host}/{db_name}"
+
+engine = create_engine(connect_url, poolclass=NullPool)
 
 session_maker = sessionmaker(bind=engine)
 
